@@ -1,0 +1,8 @@
+Threadblock threadblock 0 is running on multiple SMs: {'128', '124'}
+Threadblock threadblock 1 is running on multiple SMs: {'129', '125'}
+Threadblock threadblock 2 is running on multiple SMs: {'130', '126'}
+Threadblock threadblock 3 is running on multiple SMs: {'131', '127'}
+Threadblock threadblock 4 is running on multiple SMs: {'128', '124'}
+Threadblock threadblock 5 is running on multiple SMs: {'129', '125'}
+Threadblock threadblock 6 is running on multiple SMs: {'130', '126'}
+Threadblock threadblock 7 is running on multiple SMs: {'131', '127'}
