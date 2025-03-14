@@ -23,5 +23,4 @@ for filename in os.listdir(traces_dir):
 
 with open(os.path.join(script_dir, args.op, "sm_stickiness.txt"), "w") as f:
     for threadblock, sm_ids in data.items():
-        if len(sm_ids) > 1:
-            f.write(f"Threadblock {threadblock} is running on multiple SMs: {sm_ids}\n")
+        f.write(f"Threadblock {threadblock} is running on multiple SMs: {sm_ids}\n")
