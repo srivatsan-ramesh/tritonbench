@@ -31,51 +31,54 @@ for filename in os.listdir(traces_dir):
                 else:
                     data[event["name"]] = [event["dur"]]
 
-
-plt.figure(figsize=(10, 6))
-
 region_names = list(data.keys())
-y_positions = range(len(region_names))
+data_values = [data[region] for region in region_names]
+
+fig, ax = plt.subplots(figsize=(8, 5))
+
+# Create a boxplot for each region (whiskers go to min and max)
+bp = ax.boxplot(data_values, tick_labels=region_names, whis=[0, 100], patch_artist=True)
+
+for box in bp["boxes"]:
+    box.set(facecolor="lightgray")
+
+# Determine global min and max across all data
+global_min = min(np.min(vals) for vals in data_values)
+global_max = max(np.max(vals) for vals in data_values)
+
+# Set the plot’s y-limit slightly above the global max so annotations don’t go off the top
+upper_margin_factor = 1.1
+ax.set_ylim(global_min, global_max * upper_margin_factor)
 
 for i, region in enumerate(region_names):
     values = np.array(data[region])
-    # Scatter plot of raw data with vertical jitter to avoid overlapping exactly on the same y value.
-    jitter = np.random.uniform(-0.1, 0.1, size=values.shape)
-    y_jitter = i + jitter
-    plt.scatter(values, y_jitter, alpha=0.7, label=region)
-
-    # Compute p50 (median) and p99 percentiles
-    p50 = np.percentile(values, 50)
-    p99 = np.percentile(values, 99)
-    plt.scatter(
-        p50, i, marker="D", color="red", s=100, label="P50 (Median)" if i == 0 else ""
-    )
-    plt.scatter(p99, i, marker="s", color="blue", s=100, label="P99" if i == 0 else "")
-
-    # Compute mean and standard deviation (for error bars)
     mean_val = np.mean(values)
     std_val = np.std(values)
-    plt.errorbar(
-        mean_val,
-        i,
-        xerr=std_val,
-        fmt="o",
-        color="black",
-        markersize=10,
-        capsize=25,
-        markeredgewidth=2,
-        alpha=0.4,
-        label="Mean ± STD" if i == 0 else "",
+
+    # Coefficient of Variation (std / mean) * 100; handle zero-mean case
+    if mean_val != 0:
+        var_percent = (std_val / mean_val) * 100
+    else:
+        var_percent = 0.0
+
+    # Position the text slightly above the region's maximum value
+    max_val = np.max(values)
+    offset = 0.02 * (global_max - global_min)  # small vertical offset
+    var_text_y = max_val + offset
+
+    ax.text(
+        i + 1,
+        var_text_y,
+        f"{var_percent:.1f}%",
+        ha="center",
+        va="bottom",
+        fontsize=10,
+        color="red",
     )
 
-plt.xlabel("Clock Cycles")
-plt.ylabel("Region")
-plt.title(
-    "Scatter Plot of Clock Cycles with Percentiles and Mean ± STD for Each Region"
-)
-plt.yticks(list(y_positions), region_names)
-plt.grid(True)
-plt.legend()
+ax.set_xlabel("Region")
+ax.set_ylabel("Cycles")
+ax.set_title("Boxplot per Region with Variance % (Std as % of Mean)")
+ax.grid(True, axis="y")
 
-# Save the plot to a file instead of showing it.
-plt.savefig(f"{script_dir}/{args.op}/clock_cycles_scatter.png")
+plt.savefig(f"{script_dir}/{args.op}/clock_cycles_box_plot.png")
