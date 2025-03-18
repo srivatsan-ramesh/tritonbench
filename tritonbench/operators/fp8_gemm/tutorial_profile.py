@@ -314,7 +314,7 @@ def matmul_profile(path, a, b, activation=""):
     )
     profile_size = proton.intra_kernel_memsize(np.prod(proton_grid), pconfig)
     profile_mem = torch.empty(profile_size, device="cuda", dtype=torch.uint32)
-    proton.trace_replay.mode = "measure"
+    proton.trace_replay.mode = "timeline"
 
     compiled = matmul_kernel_profile[grid](
         a,

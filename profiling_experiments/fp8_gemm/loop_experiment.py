@@ -22,5 +22,4 @@ n = 1024
 a = torch.randn(m, k, device="cuda").to(torch.float8_e4m3fn)
 b = torch.randn(k, n, device="cuda").to(torch.float8_e4m3fn).T.contiguous().T
 
-for i in range(100):
-    tutorial_matmul_profile(f"{script_dir}/traces/chrome_trace_{i}.json", a, b)
+tutorial_matmul_profile(f"chrome_trace.json", a, b)
