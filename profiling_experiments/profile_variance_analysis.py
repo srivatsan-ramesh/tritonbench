@@ -18,7 +18,7 @@ traces_dir = os.path.join(script_dir, args.op, "traces")
 
 data = {}
 
-for filename in os.listdir(traces_dir):
+for i, filename in enumerate(os.listdir(traces_dir)):
     with open(os.path.join(traces_dir, filename), "r") as f:
         d = json.load(f)
         for event in d["traceEvents"]:
@@ -27,12 +27,15 @@ for filename in os.listdir(traces_dir):
                 and event["tid"] == f"warp {args.warp}"
             ):
                 if event["name"] in data:
-                    data[event["name"]].append(event["dur"])
+                    if i >= len(data[event["name"]]):
+                        data[event["name"]].append([event["dur"]])
+                    else:
+                        data[event["name"]][i].append(event["dur"])
                 else:
-                    data[event["name"]] = [event["dur"]]
+                    data[event["name"]] = [[event["dur"]]]
 
 region_names = list(data.keys())
-data_values = [data[region] for region in region_names]
+data_values = [np.sum(data[region], axis=1) for region in region_names]
 
 fig, ax = plt.subplots(figsize=(8, 5))
 
@@ -48,10 +51,10 @@ global_max = max(np.max(vals) for vals in data_values)
 
 # Set the plot’s y-limit slightly above the global max so annotations don’t go off the top
 upper_margin_factor = 1.1
-ax.set_ylim(global_min, global_max * upper_margin_factor)
+ax.set_ylim(global_min * 0.9, global_max * upper_margin_factor)
 
 for i, region in enumerate(region_names):
-    values = np.array(data[region])
+    values = np.array(np.sum(data[region], axis=1))
     mean_val = np.mean(values)
     std_val = np.std(values)
 
@@ -63,7 +66,7 @@ for i, region in enumerate(region_names):
 
     # Position the text slightly above the region's maximum value
     max_val = np.max(values)
-    offset = 0.02 * (global_max - global_min)  # small vertical offset
+    offset = 5  # small vertical offset
     var_text_y = max_val + offset
 
     ax.text(
