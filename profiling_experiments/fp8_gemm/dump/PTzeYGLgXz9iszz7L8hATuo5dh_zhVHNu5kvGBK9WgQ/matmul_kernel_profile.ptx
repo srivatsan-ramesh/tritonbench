@@ -450,10 +450,6 @@ $L__BB0_3:                              // =>This Inner Loop Header: Depth=1
 	.loc	1 258 20                        // tutorial_profile.py:258:20
 	shl.b32 	%r188, %r382, 14;
 	add.s32 	%r190, %r141, %r188;
-	.loc	1 131 7                         // tutorial_profile.py:131:7
-	// begin inline asm
-	mov.u32 %r155, %clock;
-	// end inline asm
 	.loc	1 260 35                        // tutorial_profile.py:260:35
 	shfl.sync.idx.b32	%r191, %r30, 0, 31, -1;
 	// begin inline asm
@@ -484,35 +480,17 @@ $L__BB0_3:                              // =>This Inner Loop Header: Depth=1
 	// end inline asm
 	mov.b32 	%f1027, %r187;
 	mov.b32 	%f1032, %r190;
+	mov.f32 	%f1033, %f1167;
+	mov.f32 	%f1034, %f1166;
+	mov.f32 	%f1028, %f1166;
+	mov.f32 	%f1036, %f1168;
+	mov.f32 	%f1029, %f1167;
 	mov.f32 	%f1030, %f1168;
 	mov.f32 	%f1031, %f1168;
 	mov.f32 	%f1035, %f1168;
-	mov.f32 	%f1033, %f1167;
-	mov.f32 	%f1034, %f1166;
-	mov.f32 	%f1036, %f1168;
-	mov.f32 	%f1028, %f1166;
-	mov.f32 	%f1029, %f1167;
 	// begin inline asm
 	// wait for regs: %f1431,%f1432,%f1433,%f1434,%f1435,%f1436,%f1437,%f1438,%f1439,%f1440,%f1441,%f1442,%f1443,%f1444,%f1445,%f1446,%f1447,%f1448,%f1449,%f1450,%f1451,%f1452,%f1453,%f1454,%f1455,%f1456,%f1457,%f1458,%f1459,%f1460,%f1461,%f1462,%f1463,%f1464,%f1465,%f1466,%f1467,%f1468,%f1469,%f1470,%f1471,%f1472,%f1473,%f1474,%f1475,%f1476,%f1477,%f1478,%f1479,%f1480,%f1481,%f1482,%f1483,%f1484,%f1485,%f1486,%f1487,%f1488,%f1489,%f1490,%f1491,%f1492,%f1493,%f1494,%f1495,%f1496,%f1497,%f1498,%f1499,%f1500,%f1501,%f1502,%f1503,%f1504,%f1505,%f1506,%f1507,%f1508,%f1509,%f1510,%f1511,%f1512,%f1513,%f1514,%f1515,%f1516,%f1517,%f1518,%f1519,%f1520,%f1521,%f1522,%f1523,%f1524,%f1525,%f1526,%f1527,%f1528,%f1529,%f1530,%f1531,%f1532,%f1533,%f1534,%f1535,%f1536,%f1537,%f1538,%f1539,%f1540,%f1541,%f1542,%f1543,%f1544,%f1545,%f1546,%f1547,%f1548,%f1549,%f1550,%f1551,%f1552,%f1553,%f1554,%f1555,%f1556,%f1557,%f1558,%f1027,%f1028,%f1029,%f1030,%f1031,%f1032,%f1033,%f1034,%f1035,%f1036
-	wgmma.wait_group.sync.aligned 0;
-	// end inline asm
-	.loc	1 134 7                         // tutorial_profile.py:134:7
-	// begin inline asm
-	mov.u32 %r156, %clock;
-	// end inline asm
-	.loc	1 131 7                         // tutorial_profile.py:131:7
-	and.b32  	%r196, %r387, 224;
-	or.b32  	%r197, %r196, %r32;
-	shl.b32 	%r198, %r197, 2;
-	add.s32 	%r157, %r136, %r198;
-	// begin inline asm
-	@%p19 st.shared.v2.b32 [ %r157 + 0 ], { %r152, %r155 };
-	// end inline asm
-	.loc	1 134 7                         // tutorial_profile.py:134:7
-	add.s32 	%r160, %r157, 32;
-	mov.b32 	%r161, -2147483648;
-	// begin inline asm
-	@%p19 st.shared.v2.b32 [ %r160 + 0 ], { %r161, %r156 };
+	wgmma.wait_group.sync.aligned 1;
 	// end inline asm
 	.loc	1 262 18                        // tutorial_profile.py:262:18
 	add.s64 	%rd45, %rd12, %rd114;
@@ -521,55 +499,73 @@ $L__BB0_3:                              // =>This Inner Loop Header: Depth=1
 	add.s64 	%rd47, %rd10, %rd114;
 	add.s64 	%rd48, %rd9, %rd114;
 	add.s64 	%rd49, %rd8, %rd114;
-	.loc	1 254 22                        // tutorial_profile.py:254:22
+	.loc	1 135 7                         // tutorial_profile.py:135:7
 	add.s64 	%rd50, %rd7, %rd114;
-	add.s32 	%r199, %r383, 1;
-	setp.lt.s32 	%p31, %r199, 3;
-	selp.b32 	%r383, %r199, 0, %p31;
+	// begin inline asm
+	mov.u32 %r155, %clock;
+	// end inline asm
+	.loc	1 254 22                        // tutorial_profile.py:254:22
+	add.s32 	%r196, %r383, 1;
+	.loc	1 137 7                         // tutorial_profile.py:137:7
+	// begin inline asm
+	mov.u32 %r156, %clock;
+	// end inline asm
+	.loc	1 135 7                         // tutorial_profile.py:135:7
+	and.b32  	%r197, %r387, 224;
+	or.b32  	%r198, %r197, %r32;
+	shl.b32 	%r199, %r198, 2;
+	add.s32 	%r157, %r136, %r199;
+	// begin inline asm
+	@%p19 st.shared.v2.b32 [ %r157 + 0 ], { %r152, %r155 };
+	// end inline asm
+	.loc	1 137 7                         // tutorial_profile.py:137:7
+	add.s32 	%r160, %r157, 32;
+	mov.b32 	%r161, -2147483648;
+	// begin inline asm
+	@%p19 st.shared.v2.b32 [ %r160 + 0 ], { %r161, %r156 };
+	// end inline asm
+	.loc	1 254 22                        // tutorial_profile.py:254:22
+	setp.lt.s32 	%p31, %r196, 3;
+	selp.b32 	%r383, %r196, 0, %p31;
+	.loc	1 141 7                         // tutorial_profile.py:141:7
+	// begin inline asm
+	mov.u32 %r163, %clock;
+	// end inline asm
+	.loc	1 143 7                         // tutorial_profile.py:143:7
+	// begin inline asm
+	mov.u32 %r164, %clock;
+	// end inline asm
+	.loc	1 141 7                         // tutorial_profile.py:141:7
+	add.s32 	%r165, %r157, 64;
+	// begin inline asm
+	@%p19 st.shared.v2.b32 [ %r165 + 0 ], { %r151, %r163 };
+	// end inline asm
+	.loc	1 143 7                         // tutorial_profile.py:143:7
+	add.s32 	%r387, %r387, 32;
+	add.s32 	%r168, %r157, 96;
+	mov.b32 	%r169, -2147483647;
+	// begin inline asm
+	@%p19 st.shared.v2.b32 [ %r168 + 0 ], { %r169, %r164 };
+	// end inline asm
 	.loc	1 257 51                        // tutorial_profile.py:257:51
 	setp.lt.s32 	%p32, %r23, %r381;
 	.loc	1 257 20                        // tutorial_profile.py:257:20
 	shl.b32 	%r200, %r383, 13;
 	add.s32 	%r201, %r137, %r200;
-	.loc	1 149 7                         // tutorial_profile.py:149:7
-	// begin inline asm
-	mov.u32 %r163, %clock;
-	// end inline asm
-	.loc	1 257 20                        // tutorial_profile.py:257:20
 	bar.sync 	0;
-	add.s32 	%r164, %r201, %r26;
+	add.s32 	%r171, %r201, %r26;
 	add.s32 	%r202, %r201, %r27;
-	add.s32 	%r166, %r202, 4096;
+	add.s32 	%r173, %r202, 4096;
 	selp.b32 	%r203, 16, 0, %p32;
-	selp.b32 	%r167, %r203, 0, %p29;
+	selp.b32 	%r174, %r203, 0, %p29;
 	// begin inline asm
-	@%p12 cp.async.cg.shared.global [ %r164 + 0 ], [ %rd45 + 0 ], 0x10, %r167;
+	@%p12 cp.async.cg.shared.global [ %r171 + 0 ], [ %rd45 + 0 ], 0x10, %r174;
 	// end inline asm
 	// begin inline asm
-	@%p12 cp.async.cg.shared.global [ %r166 + 0 ], [ %rd46 + 0 ], 0x10, %r167;
+	@%p12 cp.async.cg.shared.global [ %r173 + 0 ], [ %rd46 + 0 ], 0x10, %r174;
 	// end inline asm
 	// begin inline asm
 	cp.async.commit_group ;
-	// end inline asm
-	// begin inline asm
-	cp.async.wait_group 0x0;
-	// end inline asm
-	bar.sync 	0;
-	.loc	1 153 7                         // tutorial_profile.py:153:7
-	// begin inline asm
-	mov.u32 %r168, %clock;
-	// end inline asm
-	.loc	1 149 7                         // tutorial_profile.py:149:7
-	add.s32 	%r169, %r157, 64;
-	// begin inline asm
-	@%p19 st.shared.v2.b32 [ %r169 + 0 ], { %r151, %r163 };
-	// end inline asm
-	.loc	1 153 7                         // tutorial_profile.py:153:7
-	add.s32 	%r387, %r387, 32;
-	add.s32 	%r172, %r157, 96;
-	mov.b32 	%r173, -2147483647;
-	// begin inline asm
-	@%p19 st.shared.v2.b32 [ %r172 + 0 ], { %r173, %r168 };
 	// end inline asm
 	.loc	1 258 20                        // tutorial_profile.py:258:20
 	shl.b32 	%r204, %r383, 14;
@@ -580,16 +576,16 @@ $L__BB0_3:                              // =>This Inner Loop Header: Depth=1
 	add.s32 	%r179, %r206, 8192;
 	add.s32 	%r181, %r206, 12288;
 	// begin inline asm
-	@%p12 cp.async.cg.shared.global [ %r175 + 0 ], [ %rd47 + 0 ], 0x10, %r167;
+	@%p12 cp.async.cg.shared.global [ %r175 + 0 ], [ %rd47 + 0 ], 0x10, %r174;
 	// end inline asm
 	// begin inline asm
-	@%p12 cp.async.cg.shared.global [ %r177 + 0 ], [ %rd48 + 0 ], 0x10, %r167;
+	@%p12 cp.async.cg.shared.global [ %r177 + 0 ], [ %rd48 + 0 ], 0x10, %r174;
 	// end inline asm
 	// begin inline asm
-	@%p12 cp.async.cg.shared.global [ %r179 + 0 ], [ %rd49 + 0 ], 0x10, %r167;
+	@%p12 cp.async.cg.shared.global [ %r179 + 0 ], [ %rd49 + 0 ], 0x10, %r174;
 	// end inline asm
 	// begin inline asm
-	@%p12 cp.async.cg.shared.global [ %r181 + 0 ], [ %rd50 + 0 ], 0x10, %r167;
+	@%p12 cp.async.cg.shared.global [ %r181 + 0 ], [ %rd50 + 0 ], 0x10, %r174;
 	// end inline asm
 	// begin inline asm
 	cp.async.commit_group ;

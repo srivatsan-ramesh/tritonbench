@@ -35,6 +35,7 @@ for i, filename in enumerate(os.listdir(traces_dir)):
                     data[event["name"]] = [[event["dur"]]]
 
 region_names = list(data.keys())
+region_names.sort()
 data_values = [np.sum(data[region], axis=1) for region in region_names]
 
 fig, ax = plt.subplots(figsize=(8, 5))
@@ -66,7 +67,7 @@ for i, region in enumerate(region_names):
 
     # Position the text slightly above the region's maximum value
     max_val = np.max(values)
-    offset = 5  # small vertical offset
+    offset = 0  # small vertical offset
     var_text_y = max_val + offset
 
     ax.text(
