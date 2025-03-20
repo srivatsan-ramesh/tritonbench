@@ -494,7 +494,7 @@ $L__BB0_3:                              // =>This Inner Loop Header: Depth=1
 	mov.f32 	%f1029, %f1167;
 	// begin inline asm
 	// wait for regs: %f1431,%f1432,%f1433,%f1434,%f1435,%f1436,%f1437,%f1438,%f1439,%f1440,%f1441,%f1442,%f1443,%f1444,%f1445,%f1446,%f1447,%f1448,%f1449,%f1450,%f1451,%f1452,%f1453,%f1454,%f1455,%f1456,%f1457,%f1458,%f1459,%f1460,%f1461,%f1462,%f1463,%f1464,%f1465,%f1466,%f1467,%f1468,%f1469,%f1470,%f1471,%f1472,%f1473,%f1474,%f1475,%f1476,%f1477,%f1478,%f1479,%f1480,%f1481,%f1482,%f1483,%f1484,%f1485,%f1486,%f1487,%f1488,%f1489,%f1490,%f1491,%f1492,%f1493,%f1494,%f1495,%f1496,%f1497,%f1498,%f1499,%f1500,%f1501,%f1502,%f1503,%f1504,%f1505,%f1506,%f1507,%f1508,%f1509,%f1510,%f1511,%f1512,%f1513,%f1514,%f1515,%f1516,%f1517,%f1518,%f1519,%f1520,%f1521,%f1522,%f1523,%f1524,%f1525,%f1526,%f1527,%f1528,%f1529,%f1530,%f1531,%f1532,%f1533,%f1534,%f1535,%f1536,%f1537,%f1538,%f1539,%f1540,%f1541,%f1542,%f1543,%f1544,%f1545,%f1546,%f1547,%f1548,%f1549,%f1550,%f1551,%f1552,%f1553,%f1554,%f1555,%f1556,%f1557,%f1558,%f1027,%f1028,%f1029,%f1030,%f1031,%f1032,%f1033,%f1034,%f1035,%f1036
-	wgmma.wait_group.sync.aligned 1;
+	wgmma.wait_group.sync.aligned 0;
 	// end inline asm
 	.loc	1 134 7                         // tutorial_profile.py:134:7
 	// begin inline asm
@@ -551,7 +551,11 @@ $L__BB0_3:                              // =>This Inner Loop Header: Depth=1
 	// begin inline asm
 	cp.async.commit_group ;
 	// end inline asm
-	.loc	1 152 7                         // tutorial_profile.py:152:7
+	// begin inline asm
+	cp.async.wait_group 0x0;
+	// end inline asm
+	bar.sync 	0;
+	.loc	1 153 7                         // tutorial_profile.py:153:7
 	// begin inline asm
 	mov.u32 %r168, %clock;
 	// end inline asm
@@ -560,7 +564,7 @@ $L__BB0_3:                              // =>This Inner Loop Header: Depth=1
 	// begin inline asm
 	@%p19 st.shared.v2.b32 [ %r169 + 0 ], { %r151, %r163 };
 	// end inline asm
-	.loc	1 152 7                         // tutorial_profile.py:152:7
+	.loc	1 153 7                         // tutorial_profile.py:153:7
 	add.s32 	%r387, %r387, 32;
 	add.s32 	%r172, %r157, 96;
 	mov.b32 	%r173, -2147483647;
@@ -1232,8 +1236,8 @@ $L__tmp6:
 $L__func_end0:
                                         // -- End function
 }
-	.file	1 "/data/users/srir/tritonbench/tritonbench/operators/fp8_gemm/tutorial_profile.py"
-	.file	2 "/data/users/srir/triton/python/triton/language/standard.py"
+	.file	1 "/home/srir/tritonbench/tritonbench/operators/fp8_gemm/tutorial_profile.py"
+	.file	2 "/home/srir/triton/python/triton/language/standard.py"
 	.section	.debug_abbrev
 	{
 .b8 1                                   // Abbreviation Code
@@ -1292,12 +1296,12 @@ $L__func_end0:
 	}
 	.section	.debug_info
 	{
-.b32 220                                // Length of Unit
+.b32 214                                // Length of Unit
 .b8 2                                   // DWARF version number
 .b8 0
 .b32 .debug_abbrev                      // Offset Into Abbrev. Section
 .b8 8                                   // Address Size (in bytes)
-.b8 1                                   // Abbrev [1] 0xb:0xd5 DW_TAG_compile_unit
+.b8 1                                   // Abbrev [1] 0xb:0xcf DW_TAG_compile_unit
 .b8 116                                 // DW_AT_producer
 .b8 114
 .b8 105
@@ -1329,16 +1333,10 @@ $L__func_end0:
 .b8 0
 .b32 .debug_line                        // DW_AT_stmt_list
 .b8 47                                  // DW_AT_comp_dir
-.b8 100
-.b8 97
-.b8 116
-.b8 97
-.b8 47
-.b8 117
-.b8 115
+.b8 104
+.b8 111
+.b8 109
 .b8 101
-.b8 114
-.b8 115
 .b8 47
 .b8 115
 .b8 114
@@ -1388,7 +1386,7 @@ $L__func_end0:
 .b8 109
 .b8 109
 .b8 0
-.b8 2                                   // Abbrev [2] 0x69:0x18 DW_TAG_subprogram
+.b8 2                                   // Abbrev [2] 0x63:0x18 DW_TAG_subprogram
 .b8 109                                 // DW_AT_name
 .b8 97
 .b8 116
@@ -1412,26 +1410,26 @@ $L__func_end0:
 .b8 101
 .b8 0
 .b8 1                                   // DW_AT_inline
-.b8 3                                   // Abbrev [3] 0x81:0x5e DW_TAG_subprogram
+.b8 3                                   // Abbrev [3] 0x7b:0x5e DW_TAG_subprogram
 .b64 $L__func_begin0                    // DW_AT_low_pc
 .b64 $L__func_end0                      // DW_AT_high_pc
-.b32 105                                // DW_AT_abstract_origin
-.b8 4                                   // Abbrev [4] 0x96:0x18 DW_TAG_inlined_subroutine
-.b32 105                                // DW_AT_abstract_origin
+.b32 99                                 // DW_AT_abstract_origin
+.b8 4                                   // Abbrev [4] 0x90:0x18 DW_TAG_inlined_subroutine
+.b32 99                                 // DW_AT_abstract_origin
 .b64 $L__tmp1                           // DW_AT_low_pc
 .b64 $L__tmp2                           // DW_AT_high_pc
 .b8 1                                   // DW_AT_call_file
 .b8 226                                 // DW_AT_call_line
 .b8 27                                  // DW_AT_call_column
-.b8 4                                   // Abbrev [4] 0xae:0x18 DW_TAG_inlined_subroutine
-.b32 105                                // DW_AT_abstract_origin
+.b8 4                                   // Abbrev [4] 0xa8:0x18 DW_TAG_inlined_subroutine
+.b32 99                                 // DW_AT_abstract_origin
 .b64 $L__tmp2                           // DW_AT_low_pc
 .b64 $L__tmp3                           // DW_AT_high_pc
 .b8 1                                   // DW_AT_call_file
 .b8 227                                 // DW_AT_call_line
 .b8 27                                  // DW_AT_call_column
-.b8 4                                   // Abbrev [4] 0xc6:0x18 DW_TAG_inlined_subroutine
-.b32 105                                // DW_AT_abstract_origin
+.b8 4                                   // Abbrev [4] 0xc0:0x18 DW_TAG_inlined_subroutine
+.b32 99                                 // DW_AT_abstract_origin
 .b64 $L__tmp4                           // DW_AT_low_pc
 .b64 $L__tmp5                           // DW_AT_high_pc
 .b8 1                                   // DW_AT_call_file
