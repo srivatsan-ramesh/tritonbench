@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+import subprocess
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -55,14 +56,89 @@ def get_mean_of_sum(traces_dir="traces", region_name="region_0"):
     return np.mean(np.sum(get_data_for_region(traces_dir, region_name), axis=3))
 
 
-def get_tensor_core_util_from_proton(m, k, n):
-    main(m, k, n, RunType.PASS1)
-    main(m, k, n, RunType.PASS2)
+def _bash(command):
+    result = subprocess.run(
+        command,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,  # Automatically decode bytes to str
+        shell=True,  # Execute through the shell
+        check=True,  # Raise an exception for non-zero return codes
+    )
+    return result.stdout.strip()
 
-    return get_mean_of_sum("traces", "region_0") / get_mean_of_sum(
-        "traces_pass2", "region_0"
+
+def get_tensor_core_util_from_proton(m, k, n):
+    _bash("python profiling_experiments/fp8_gemm/loop_experiment.py")
+    _bash("python profiling_experiments/fp8_gemm/loop_experiment.py --pass2")
+
+    return (
+        100.0
+        * get_mean_of_sum("traces", "region_0")
+        / get_mean_of_sum("traces_pass2", "region_0")
     )
 
 
 def get_tensor_core_util_from_ncu(m, k, n):
-    pass
+    result = _bash(
+        "ncu --metrics sm__pipe_tensor_op_hmma_cycles_active.avg.pct_of_peak_sustained_active -k matmul_kernel_profile --csv python profiling_experiments/fp8_gemm/loop_experiment.py --ncu",
+    )
+    for line in result.split("\n"):
+        if "matmul_kernel_profile" in line:
+            return float(line.split(",")[-1].strip('"'))
+    return 0
+
+
+SHAPES = [
+    (1024, 512, 1024),
+]
+
+results = []
+
+for m, k, n in SHAPES:
+    results.append(
+        [
+            get_tensor_core_util_from_ncu(m, k, n),
+            get_tensor_core_util_from_proton(m, k, n),
+        ]
+    )
+
+
+labels = [f"{m}x{k}x{n}" for m, k, n in SHAPES]
+ncu_values = [r[0] for r in results]
+proton_values = [r[1] for r in results]
+
+x = np.arange(len(SHAPES))  # label locations
+width = 0.35  # width of the bars
+
+# Create the bar plot.
+fig, ax = plt.subplots()
+rects1 = ax.bar(x - width / 2, ncu_values, width, label="NCU")
+rects2 = ax.bar(x + width / 2, proton_values, width, label="InK Prof")
+
+# Add labels, title, and custom x-axis tick labels.
+ax.set_ylabel("Utilization (%)")
+ax.set_title("Tensor Core Utilization by Shape and Method")
+ax.set_xticks(x)
+ax.set_xticklabels(labels)
+ax.legend()
+
+
+# Optionally, add labels to each bar.
+def autolabel(rects):
+    for rect in rects:
+        height = rect.get_height()
+        ax.annotate(
+            f"{height}",
+            xy=(rect.get_x() + rect.get_width() / 2, height),
+            xytext=(0, 3),  # Offset text by 3 points above the bar
+            textcoords="offset points",
+            ha="center",
+            va="bottom",
+        )
+
+
+autolabel(rects1)
+autolabel(rects2)
+
+plt.savefig(f"{script_dir}/tensor_core_usage.png")

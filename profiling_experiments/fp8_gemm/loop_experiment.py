@@ -1,6 +1,8 @@
 import argparse
 import os
 
+import numpy
+
 import torch
 
 from tritonbench.operators.fp8_gemm.tutorial_profile import (
@@ -28,13 +30,16 @@ def main(m, k, n, run_type):
         os.environ["TRITON_DUMP_DIR"] = f"{script_dir}/dump"
         os.environ["TRITON_KERNEL_OVERRIDE"] = "1"
         os.environ["TRITON_OVERRIDE_DIR"] = f"{script_dir}/override_pass2"
+    else:
+        os.environ["TRITON_KERNEL_DUMP"] = "0"
+        os.environ["TRITON_KERNEL_OVERRIDE"] = "0"
 
     a = torch.randn(m, k, device="cuda").to(torch.float8_e4m3fn)
     b = torch.randn(k, n, device="cuda").to(torch.float8_e4m3fn).T.contiguous().T
 
-    if args.ncu:
+    if run_type == RunType.NCU:
         tutorial_matmul_profile(None, a, b)
-    elif args.pass2:
+    elif run_type == RunType.PASS2:
         for i in range(100):
             tutorial_matmul_profile(
                 f"{script_dir}/traces_pass2/chrome_trace_{i}.json", a, b
