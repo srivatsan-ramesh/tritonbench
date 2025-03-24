@@ -31,7 +31,8 @@ def main(m, k, n, run_type):
         os.environ["TRITON_KERNEL_OVERRIDE"] = "1"
         os.environ["TRITON_OVERRIDE_DIR"] = f"{script_dir}/override_pass2"
     else:
-        os.environ["TRITON_KERNEL_DUMP"] = "0"
+        os.environ["TRITON_KERNEL_DUMP"] = "1"
+        os.environ["TRITON_DUMP_DIR"] = f"{script_dir}/dump"
         os.environ["TRITON_KERNEL_OVERRIDE"] = "0"
 
     a = torch.randn(m, k, device="cuda").to(torch.float8_e4m3fn)
@@ -53,9 +54,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--ncu", action="store_true")
     parser.add_argument("--pass2", action="store_true")
-    parser.add_argument("--m", type=int, default=1024)
-    parser.add_argument("--k", type=int, default=512)
-    parser.add_argument("--n", type=int, default=1024)
+    parser.add_argument("--m", type=int, default=2048)
+    parser.add_argument("--k", type=int, default=1024)
+    parser.add_argument("--n", type=int, default=2048)
     args = parser.parse_args()
     main(
         args.m,

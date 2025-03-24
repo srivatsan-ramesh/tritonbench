@@ -69,8 +69,12 @@ def _bash(command):
 
 
 def get_tensor_core_util_from_proton(m, k, n):
-    _bash("python profiling_experiments/fp8_gemm/loop_experiment.py")
-    _bash("python profiling_experiments/fp8_gemm/loop_experiment.py --pass2")
+    _bash(
+        f"python profiling_experiments/fp8_gemm/loop_experiment.py --m {m} --k {k} --n {n}"
+    )
+    _bash(
+        f"python profiling_experiments/fp8_gemm/loop_experiment.py --pass2 --m {m} --k {k} --n {n}"
+    )
 
     return (
         100.0
@@ -81,7 +85,7 @@ def get_tensor_core_util_from_proton(m, k, n):
 
 def get_tensor_core_util_from_ncu(m, k, n):
     result = _bash(
-        "ncu --metrics sm__pipe_tensor_op_hmma_cycles_active.avg.pct_of_peak_sustained_active -k matmul_kernel_profile --csv python profiling_experiments/fp8_gemm/loop_experiment.py --ncu",
+        f"ncu --metrics sm__pipe_tensor_op_hmma_cycles_active.avg.pct_of_peak_sustained_active -k matmul_kernel_profile --csv python profiling_experiments/fp8_gemm/loop_experiment.py --ncu --m {m} --k {k} --n {n}",
     )
     for line in result.split("\n"):
         if "matmul_kernel_profile" in line:
@@ -91,6 +95,10 @@ def get_tensor_core_util_from_ncu(m, k, n):
 
 SHAPES = [
     (1024, 512, 1024),
+    (1024, 1024, 1024),
+    (2048, 1024, 64),
+    (4096, 1024, 2048),
+    (4096, 64, 4096),
 ]
 
 results = []
@@ -106,32 +114,38 @@ for m, k, n in SHAPES:
 
 labels = [f"{m}x{k}x{n}" for m, k, n in SHAPES]
 ncu_values = [r[0] for r in results]
-proton_values = [r[1] for r in results]
+ink_values = [r[1] for r in results]
 
-x = np.arange(len(SHAPES))  # label locations
-width = 0.35  # width of the bars
+x = np.arange(len(SHAPES))
+width = 0.35
 
-# Create the bar plot.
-fig, ax = plt.subplots()
+# Create a larger figure
+fig, ax = plt.subplots(figsize=(8, 6))
+
 rects1 = ax.bar(x - width / 2, ncu_values, width, label="NCU")
-rects2 = ax.bar(x + width / 2, proton_values, width, label="InK Prof")
+rects2 = ax.bar(x + width / 2, ink_values, width, label="InK Prof")
 
-# Add labels, title, and custom x-axis tick labels.
 ax.set_ylabel("Utilization (%)")
 ax.set_title("Tensor Core Utilization by Shape and Method")
 ax.set_xticks(x)
 ax.set_xticklabels(labels)
 ax.legend()
 
+# Rotate x labels to prevent overlap
+plt.setp(ax.get_xticklabels(), rotation=45, ha="right")
 
-# Optionally, add labels to each bar.
+# Optionally, increase y-limit so labels above tall bars don't get cut off
+max_val = max(max(ncu_values), max(ink_values))
+ax.set_ylim(0, max_val * 1.1)  # 10% headroom above the tallest bar
+
+
 def autolabel(rects):
     for rect in rects:
         height = rect.get_height()
         ax.annotate(
-            f"{height}",
+            f"{height:.2f}",
             xy=(rect.get_x() + rect.get_width() / 2, height),
-            xytext=(0, 3),  # Offset text by 3 points above the bar
+            xytext=(0, 3),  # 3 points vertical offset
             textcoords="offset points",
             ha="center",
             va="bottom",
@@ -141,4 +155,7 @@ def autolabel(rects):
 autolabel(rects1)
 autolabel(rects2)
 
-plt.savefig(f"{script_dir}/tensor_core_usage.png")
+# Ensure everything fits without cutting off
+plt.tight_layout()
+
+plt.savefig(f"{script_dir}/tensor_core_usage_warp_4.png")
