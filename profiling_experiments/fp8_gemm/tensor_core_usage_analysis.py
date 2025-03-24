@@ -158,4 +158,10 @@ autolabel(rects2)
 # Ensure everything fits without cutting off
 plt.tight_layout()
 
-plt.savefig(f"{script_dir}/tensor_core_usage_warp_16.png")
+warp_suffix = "warp_32"
+
+plt.savefig(f"{script_dir}/tensor_core_usage_{warp_suffix}.png")
+with open(f"{script_dir}/util_results/{warp_suffix}.txt", "w") as f:
+    f.write(",".join([f"{val:.2f}" for val in ncu_values]))
+    f.write("\n")
+    f.write(",".join([f"{val:.2f}" for val in ink_values]))

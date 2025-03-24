@@ -170,7 +170,7 @@ def get_cuda_autotune_config():
                 "GROUP_SIZE_M": 8,
             },
             num_stages=3,
-            num_warps=16,
+            num_warps=32,
         ),
     ]
 
