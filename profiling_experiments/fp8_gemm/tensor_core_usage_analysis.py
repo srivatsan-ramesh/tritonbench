@@ -158,4 +158,4 @@ autolabel(rects2)
 # Ensure everything fits without cutting off
 plt.tight_layout()
 
-plt.savefig(f"{script_dir}/tensor_core_usage_warp_4.png")
+plt.savefig(f"{script_dir}/tensor_core_usage_warp_16.png")
