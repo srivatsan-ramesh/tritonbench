@@ -334,6 +334,9 @@ def matmul_profile(path, a, b, activation=""):
         proton_slots=SLOT,
     )
 
-    proton.dump_chrome_trace(64, pconfig, profile_mem, path, compiled)
+    if path is not None:
+        proton.dump_chrome_trace(
+            np.prod(proton_grid), pconfig, profile_mem, path, compiled
+        )
 
     return c
