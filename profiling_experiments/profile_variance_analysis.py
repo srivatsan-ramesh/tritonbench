@@ -24,7 +24,7 @@ for i, filename in enumerate(os.listdir(traces_dir)):
         for event in d["traceEvents"]:
             if (
                 event["pid"] == f"threadblock {args.threadblock}"
-                and event["tid"] == f"warp {args.warp}"
+                and event["tid"] == f"warpgroup {args.warp}"
             ):
                 if event["name"] in data:
                     if i >= len(data[event["name"]]):
@@ -81,7 +81,7 @@ for i, region in enumerate(region_names):
 
 ax.set_xlabel("Region")
 ax.set_ylabel("Cycles")
-ax.set_title("Boxplot per Region with Variance % (Std as % of Mean)")
+ax.set_title("Figure 7: Boxplot per Region with Variance % (Std as % of Mean)")
 ax.grid(True, axis="y")
 
 plt.savefig(f"{script_dir}/{args.op}/clock_cycles_box_plot.png")
