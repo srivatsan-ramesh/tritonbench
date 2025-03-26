@@ -11,6 +11,8 @@ from loop_experiment import main, RunType
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
+WARPS = 32
+
 
 def get_all_data_as_dict(traces_dir_name="traces"):
     """
@@ -70,10 +72,10 @@ def _bash(command):
 
 def get_tensor_core_util_from_proton(m, k, n):
     _bash(
-        f"python profiling_experiments/fp8_gemm/loop_experiment.py --m {m} --k {k} --n {n}"
+        f"python profiling_experiments/fp8_gemm/loop_experiment.py --m {m} --k {k} --n {n} --num_warps {WARPS}"
     )
     _bash(
-        f"python profiling_experiments/fp8_gemm/loop_experiment.py --pass2 --m {m} --k {k} --n {n}"
+        f"python profiling_experiments/fp8_gemm/loop_experiment.py --pass2 --m {m} --k {k} --n {n} --num_warps {WARPS}"
     )
 
     return (
@@ -85,7 +87,7 @@ def get_tensor_core_util_from_proton(m, k, n):
 
 def get_tensor_core_util_from_ncu(m, k, n):
     result = _bash(
-        f"ncu --metrics sm__pipe_tensor_op_hmma_cycles_active.avg.pct_of_peak_sustained_active -k matmul_kernel_profile --csv python profiling_experiments/fp8_gemm/loop_experiment.py --ncu --m {m} --k {k} --n {n}",
+        f"ncu --metrics sm__pipe_tensor_op_hmma_cycles_active.avg.pct_of_peak_sustained_active -k matmul_kernel_profile --csv python profiling_experiments/fp8_gemm/loop_experiment.py --ncu --m {m} --k {k} --n {n} --num_warps {WARPS}",
     )
     for line in result.split("\n"):
         if "matmul_kernel_profile" in line:
@@ -158,7 +160,7 @@ autolabel(rects2)
 # Ensure everything fits without cutting off
 plt.tight_layout()
 
-warp_suffix = "warp_32"
+warp_suffix = f"warp_{WARPS}"
 
 plt.savefig(f"{script_dir}/tensor_core_usage_{warp_suffix}.png")
 with open(f"{script_dir}/util_results/{warp_suffix}.txt", "w") as f:

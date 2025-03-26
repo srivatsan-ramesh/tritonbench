@@ -157,7 +157,7 @@ import triton
 import triton.intraprof as proton
 import triton.language as tl
 
-SLOT = 256
+SLOT = 1024
 
 
 def get_cuda_autotune_config():
@@ -165,7 +165,7 @@ def get_cuda_autotune_config():
         triton.Config(
             {
                 "BLOCK_SIZE_M": 128,
-                "BLOCK_SIZE_N": 256,
+                "BLOCK_SIZE_N": 128,
                 "BLOCK_SIZE_K": 64,
                 "GROUP_SIZE_M": 8,
             },
@@ -287,7 +287,7 @@ def leaky_relu(x):
 # and (1) checks any shape constraint; (2) allocates the output; (3) launches the above kernel.
 
 
-def matmul_profile(path, a, b, activation=""):
+def matmul_profile(path, a, b, num_warps, activation=""):
     # Check constraints.
     assert a.shape[1] == b.shape[0], "Incompatible dimensions"
     assert a.is_contiguous(), "Matrix A must be contiguous"
@@ -300,7 +300,18 @@ def matmul_profile(path, a, b, activation=""):
         triton.cdiv(M, META["BLOCK_SIZE_M"]) * triton.cdiv(N, META["BLOCK_SIZE_N"]),
     )
 
-    configs = get_cuda_autotune_config()
+    configs = [
+        triton.Config(
+            {
+                "BLOCK_SIZE_M": 128,
+                "BLOCK_SIZE_N": 128,
+                "BLOCK_SIZE_K": 64,
+                "GROUP_SIZE_M": 8,
+            },
+            num_stages=3,
+            num_warps=num_warps,
+        ),
+    ]
 
     # We preallocate the profile memory.
     pconfig = proton.IntraKernelConfig(
