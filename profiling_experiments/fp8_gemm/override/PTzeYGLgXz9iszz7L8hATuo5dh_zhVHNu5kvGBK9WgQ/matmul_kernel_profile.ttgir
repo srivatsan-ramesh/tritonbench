@@ -132,15 +132,15 @@ module attributes {"triton_gpu.num-ctas" = 1 : i32, "triton_gpu.num-warps" = 8 :
       %125:3 = triton_nvidia_gpu.warp_group_dot_wait %124, %121, %123 {pendings = 1 : i32} : tensor<128x256xf32, #mma>, !tt.memdesc<128x64xf8E4M3FN, #shared, #triton_gpu.shared_memory, mutable>, !tt.memdesc<64x256xf8E4M3FN, #shared1, #triton_gpu.shared_memory, mutable> loc(#loc43)
       %126 = tt.addptr %arg12, %cst_0 : tensor<128x64x!tt.ptr<f8E4M3FN>, #blocked1>, tensor<128x64xi32, #blocked1> loc(#loc40)
       %127 = tt.addptr %arg13, %cst : tensor<64x256x!tt.ptr<f8E4M3FN>, #blocked>, tensor<64x256xi32, #blocked> loc(#loc41)
-      tt.proton_record <0, "start", "cycle", "warp">
       %128 = arith.addi %arg14, %c1_i32 : i32 loc(#loc37)
-      tt.proton_record <0, "end", "cycle", "warp">
       %129 = arith.cmpi slt, %128, %c3_i32 : i32 loc(#loc37)
       %130 = arith.select %129, %128, %c0_i32 : i32 loc(#loc37)
+      tt.proton_record <0, "start", "cycle", "warpgroup">
       %131 = arith.addi %arg10, %c2_i32 : i32 loc(#loc37)
-      tt.proton_record <1, "start", "cycle", "warp">
+      tt.proton_record <0, "end", "cycle", "warpgroup">
+      tt.proton_record <1, "start", "cycle", "warpgroup">
       %132 = arith.muli %131, %c64_i32 : i32 loc(#loc44)
-      tt.proton_record <1, "end", "cycle", "warp">
+      tt.proton_record <1, "end", "cycle", "warpgroup">
       %133 = arith.subi %arg5, %132 : i32 loc(#loc42)
       %134 = tt.splat %133 : i32 -> tensor<1x64xi32, #blocked1> loc(#loc38)
       %135 = arith.cmpi slt, %36, %134 : tensor<1x64xi32, #blocked1> loc(#loc38)

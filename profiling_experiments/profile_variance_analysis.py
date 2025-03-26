@@ -24,7 +24,7 @@ for i, filename in enumerate(os.listdir(traces_dir)):
         for event in d["traceEvents"]:
             if (
                 event["pid"] == f"threadblock {args.threadblock}"
-                and event["tid"] == f"warp {args.warp}"
+                and event["tid"] == f"warpgroup {args.warp}"
             ):
                 if event["name"] in data:
                     if i >= len(data[event["name"]]):
