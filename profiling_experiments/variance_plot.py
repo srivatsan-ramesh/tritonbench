@@ -63,7 +63,9 @@ for region, tb_wg_data in data.items():
     plt.plot(combos[:64], variances[:64], marker=".", label=region)
 plt.xticks(rotation=45)
 plt.ylabel("Cycles Variance %")
-plt.title("Figure 8: Cycles Variance across Threadblocks and Warpgroups")
+plt.title(
+    "Cycles Variance across Threadblocks and Warpgroups - (M, N, K) = (1024, 1024, 512)"
+)
 plt.legend()
 plt.tight_layout()
 

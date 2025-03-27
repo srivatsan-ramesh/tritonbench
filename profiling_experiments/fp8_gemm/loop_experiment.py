@@ -15,8 +15,8 @@ from tritonbench.operators.fp8_gemm.tutorial_profile import (
 )
 
 
-m = 4096
-k = 1024
+m = 1024
+k = 512
 n = 1024
 
 a = torch.randn(m, k, device="cuda").to(torch.float8_e4m3fn)

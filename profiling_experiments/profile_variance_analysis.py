@@ -79,9 +79,10 @@ for i, region in enumerate(region_names):
         color="red",
     )
 
-ax.set_xlabel("Region")
-ax.set_ylabel("Cycles")
-ax.set_title("Figure 7: Boxplot per Region with Variance % (Std as % of Mean)")
+ax.set_ylabel("Clock Cycles")
+ax.set_title(
+    "Boxplot per Region with Variance % (Std as % of Mean) - (M, N, K) = (1024, 1024, 512)"
+)
 ax.grid(True, axis="y")
 
 plt.savefig(f"{script_dir}/{args.op}/clock_cycles_box_plot.png")
