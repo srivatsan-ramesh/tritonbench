@@ -18,6 +18,8 @@ from collections import defaultdict
 
 data = defaultdict(lambda: defaultdict(list))
 
+regions = {"region_0": "prologue", "region_1": "stable", "region_2": "epilogue"}
+
 for filename in os.listdir(traces_dir):
     with open(os.path.join(traces_dir, filename), "r") as f:
         d = json.load(f)
@@ -59,11 +61,10 @@ for region, tb_wg_data in data.items():
     combos, variances = zip(*sorted(zip(combos, variances)))
 
     # Plot
-    plt.plot(combos[:64], variances[:64], marker=".", label=region)
+    plt.plot(combos[:64], variances[:64], marker=".", label=regions[region])
 plt.xticks(rotation=45)
-plt.ylabel("Cycles Variance %")
-plt.xlabel("(M, N, K) = (1024, 1024, 512)")
-plt.title("Cycles Variance % across Threadblocks and Warpgroups ")
+plt.ylabel("Cycles Variance %", fontsize=20)
+plt.xlabel("(M, N, K) = (4096, 1024, 1024)", fontsize=20)
 plt.legend()
 plt.tight_layout()
 
