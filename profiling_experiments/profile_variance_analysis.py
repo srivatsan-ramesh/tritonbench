@@ -40,7 +40,12 @@ data_values = [np.sum(data[region], axis=1) for region in region_names]
 fig, ax = plt.subplots(figsize=(8, 5))
 
 # Create a boxplot for each region (whiskers go to min and max)
-bp = ax.boxplot(data_values, tick_labels=region_names, whis=[0, 100], patch_artist=True)
+bp = ax.boxplot(
+    data_values,
+    tick_labels=["prologue", "stable", "epilogue"],
+    whis=[0, 100],
+    patch_artist=True,
+)
 
 for box in bp["boxes"]:
     box.set(facecolor="lightgray")
@@ -79,9 +84,9 @@ for i, region in enumerate(region_names):
         color="red",
     )
 
-ax.set_xlabel("(M, N, K) = (4096, 1024, 1024)")
+ax.set_xlabel("(M, N, K) = (1024, 1024, 512)")
 ax.set_ylabel("Cycles")
-ax.set_title("Figure 2: Boxplot per Region with Variance % (Std as % of Mean)")
+ax.set_title("Boxplot per Region with Variance % (Std as % of Mean)")
 ax.grid(True, axis="y")
 
 plt.savefig(f"{script_dir}/{args.op}/clock_cycles_box_plot.png")

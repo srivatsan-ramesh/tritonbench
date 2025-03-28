@@ -42,13 +42,9 @@ $L__func_begin0:
 	ld.param.u64 	%rd19, [matmul_kernel_profile_param_1];
 	ld.param.u64 	%rd18, [matmul_kernel_profile_param_0];
 $L__tmp0:
-	.loc	1 10 5                          // tutorial_profile.py:10:5
-	// begin inline asm
-	mov.u32 %r50, %clock;
-	// end inline asm
 	.loc	1 225 24                        // tutorial_profile.py:225:24
 	// begin inline asm
-	mov.u32 %r51, %ctaid.x;
+	mov.u32 %r50, %ctaid.x;
 	// end inline asm
 $L__tmp1:
 	.loc	2 40 22                         // standard.py:40:22
@@ -59,6 +55,11 @@ $L__tmp1:
 	add.s32 	%r87, %r84, %r86;
 	shr.s32 	%r88, %r87, 7;
 $L__tmp2:
+	.loc	1 30 5                          // tutorial_profile.py:30:5
+	// begin inline asm
+	mov.u32 %r51, %clock;
+	// end inline asm
+$L__tmp3:
 	.loc	2 40 22                         // standard.py:40:22
 	add.s32 	%r89, %r47, 255;
 	.loc	2 40 28                         // standard.py:40:28
@@ -67,12 +68,12 @@ $L__tmp2:
 	add.s32 	%r92, %r89, %r91;
 	shr.s32 	%r93, %r92, 8;
 	ld.param.u32 	%r95, [matmul_kernel_profile_param_6];
-$L__tmp3:
+$L__tmp4:
 	.loc	1 228 38                        // tutorial_profile.py:228:38
 	shl.b32 	%r96, %r93, 3;
 	ld.param.u32 	%r97, [matmul_kernel_profile_param_7];
 	.loc	1 229 22                        // tutorial_profile.py:229:22
-	div.s32 	%r98, %r51, %r96;
+	div.s32 	%r98, %r50, %r96;
 	.loc	1 230 29                        // tutorial_profile.py:230:29
 	shl.b32 	%r99, %r98, 3;
 	.loc	1 231 35                        // tutorial_profile.py:231:35
@@ -81,7 +82,7 @@ $L__tmp3:
 	min.s32 	%r102, %r100, 8;
 	.loc	1 232 34                        // tutorial_profile.py:232:34
 	mul.lo.s32 	%r103, %r98, %r96;
-	sub.s32 	%r104, %r51, %r103;
+	sub.s32 	%r104, %r50, %r103;
 	.loc	1 233 40                        // tutorial_profile.py:233:40
 	div.s32 	%r105, %r104, %r102;
 	.loc	1 232 54                        // tutorial_profile.py:232:54
@@ -165,7 +166,7 @@ $L__tmp3:
 	// begin inline asm
 	mov.u32 %r52, %clock;
 	// end inline asm
-	.loc	1 10 5                          // tutorial_profile.py:10:5
+	.loc	1 30 5                          // tutorial_profile.py:30:5
 	and.b32  	%r24, %r2, 127;
 	setp.eq.s32 	%p1, %r24, 0;
 	shl.b32 	%r25, %r2, 1;
@@ -174,7 +175,7 @@ $L__tmp3:
 	add.s32 	%r53, %r135, %r134;
 	mov.b32 	%r386, 0;
 	// begin inline asm
-	@%p1 st.shared.v2.b32 [ %r53 + 0 ], { %r386, %r50 };
+	@%p1 st.shared.v2.b32 [ %r53 + 0 ], { %r386, %r51 };
 	// end inline asm
 	.loc	1 80 5                          // tutorial_profile.py:80:5
 	add.s32 	%r56, %r53, 8;
@@ -186,10 +187,10 @@ $L__tmp3:
 	// begin inline asm
 	mov.u32 %r59, %clock;
 	// end inline asm
-$L__tmp4:
+$L__tmp5:
 	.loc	2 40 22                         // standard.py:40:22
 	add.s32 	%r136, %r48, 63;
-$L__tmp5:
+$L__tmp6:
 	.loc	1 254 22                        // tutorial_profile.py:254:22
 	setp.lt.s32 	%p15, %r136, 64;
 	setp.gt.s32 	%p16, %r136, 63;
@@ -1008,22 +1009,22 @@ $L__BB0_3:                              // %._crit_edge
 	.loc	1 275 58                        // tutorial_profile.py:275:58
 	setp.lt.s32 	%p69, %r22, %r47;
 	.loc	1 275 39                        // tutorial_profile.py:275:39
-	and.pred  	%p35, %p53, %p69;
-	and.pred  	%p36, %p54, %p69;
-	and.pred  	%p37, %p55, %p69;
-	and.pred  	%p38, %p56, %p69;
-	and.pred  	%p39, %p57, %p69;
-	and.pred  	%p40, %p58, %p69;
-	and.pred  	%p41, %p59, %p69;
-	and.pred  	%p42, %p60, %p69;
-	and.pred  	%p43, %p61, %p69;
-	and.pred  	%p44, %p62, %p69;
-	and.pred  	%p45, %p63, %p69;
-	and.pred  	%p46, %p64, %p69;
-	and.pred  	%p47, %p65, %p69;
-	and.pred  	%p48, %p66, %p69;
-	and.pred  	%p49, %p67, %p69;
-	and.pred  	%p50, %p68, %p69;
+	and.pred  	%p37, %p53, %p69;
+	and.pred  	%p38, %p54, %p69;
+	and.pred  	%p39, %p55, %p69;
+	and.pred  	%p40, %p56, %p69;
+	and.pred  	%p41, %p57, %p69;
+	and.pred  	%p42, %p58, %p69;
+	and.pred  	%p43, %p59, %p69;
+	and.pred  	%p44, %p60, %p69;
+	and.pred  	%p45, %p61, %p69;
+	and.pred  	%p46, %p62, %p69;
+	and.pred  	%p47, %p63, %p69;
+	and.pred  	%p48, %p64, %p69;
+	and.pred  	%p49, %p65, %p69;
+	and.pred  	%p50, %p66, %p69;
+	and.pred  	%p51, %p67, %p69;
+	and.pred  	%p52, %p68, %p69;
 	.loc	1 276 21                        // tutorial_profile.py:276:21
 	shr.u32 	%r354, %r3, 2;
 	and.b32  	%r355, %r25, 6;
@@ -1102,85 +1103,86 @@ $L__BB0_3:                              // %._crit_edge
 	mad.lo.s32 	%r365, %r5, 264, %r364;
 	shl.b32 	%r366, %r365, 1;
 	add.s32 	%r367, %r143, %r366;
-	ld.shared.v4.u32 	{%r199, %r200, %r201, %r202}, [%r367];
-	ld.shared.v4.u32 	{%r203, %r204, %r205, %r206}, [%r367+4224];
-	ld.shared.v4.u32 	{%r207, %r208, %r209, %r210}, [%r367+8448];
-	ld.shared.v4.u32 	{%r211, %r212, %r213, %r214}, [%r367+12672];
-	ld.shared.v4.u32 	{%r215, %r216, %r217, %r218}, [%r367+16896];
-	ld.shared.v4.u32 	{%r219, %r220, %r221, %r222}, [%r367+21120];
-	ld.shared.v4.u32 	{%r223, %r224, %r225, %r226}, [%r367+25344];
-	ld.shared.v4.u32 	{%r227, %r228, %r229, %r230}, [%r367+29568];
-	ld.shared.v4.u32 	{%r231, %r232, %r233, %r234}, [%r367+33792];
-	ld.shared.v4.u32 	{%r235, %r236, %r237, %r238}, [%r367+38016];
-	ld.shared.v4.u32 	{%r239, %r240, %r241, %r242}, [%r367+42240];
-	ld.shared.v4.u32 	{%r243, %r244, %r245, %r246}, [%r367+46464];
-	ld.shared.v4.u32 	{%r247, %r248, %r249, %r250}, [%r367+50688];
-	ld.shared.v4.u32 	{%r251, %r252, %r253, %r254}, [%r367+54912];
-	ld.shared.v4.u32 	{%r255, %r256, %r257, %r258}, [%r367+59136];
-	ld.shared.v4.u32 	{%r259, %r260, %r261, %r262}, [%r367+63360];
+	ld.shared.v4.u32 	{%r206, %r207, %r208, %r209}, [%r367];
+	ld.shared.v4.u32 	{%r210, %r211, %r212, %r213}, [%r367+4224];
+	ld.shared.v4.u32 	{%r214, %r215, %r216, %r217}, [%r367+8448];
+	ld.shared.v4.u32 	{%r218, %r219, %r220, %r221}, [%r367+12672];
+	ld.shared.v4.u32 	{%r222, %r223, %r224, %r225}, [%r367+16896];
+	ld.shared.v4.u32 	{%r226, %r227, %r228, %r229}, [%r367+21120];
+	ld.shared.v4.u32 	{%r230, %r231, %r232, %r233}, [%r367+25344];
+	ld.shared.v4.u32 	{%r234, %r235, %r236, %r237}, [%r367+29568];
+	ld.shared.v4.u32 	{%r238, %r239, %r240, %r241}, [%r367+33792];
+	ld.shared.v4.u32 	{%r242, %r243, %r244, %r245}, [%r367+38016];
+	ld.shared.v4.u32 	{%r246, %r247, %r248, %r249}, [%r367+42240];
+	ld.shared.v4.u32 	{%r250, %r251, %r252, %r253}, [%r367+46464];
+	ld.shared.v4.u32 	{%r254, %r255, %r256, %r257}, [%r367+50688];
+	ld.shared.v4.u32 	{%r258, %r259, %r260, %r261}, [%r367+54912];
+	ld.shared.v4.u32 	{%r262, %r263, %r264, %r265}, [%r367+59136];
+	ld.shared.v4.u32 	{%r266, %r267, %r268, %r269}, [%r367+63360];
+	.loc	1 186 5                         // tutorial_profile.py:186:5
 	// begin inline asm
-	@%p35 st.global.v4.b32 [ %rd57 + 0 ], { %r199, %r200, %r201, %r202 };
-	// end inline asm
-	// begin inline asm
-	@%p36 st.global.v4.b32 [ %rd58 + 0 ], { %r203, %r204, %r205, %r206 };
-	// end inline asm
-	// begin inline asm
-	@%p37 st.global.v4.b32 [ %rd59 + 0 ], { %r207, %r208, %r209, %r210 };
-	// end inline asm
-	// begin inline asm
-	@%p38 st.global.v4.b32 [ %rd60 + 0 ], { %r211, %r212, %r213, %r214 };
-	// end inline asm
-	// begin inline asm
-	@%p39 st.global.v4.b32 [ %rd61 + 0 ], { %r215, %r216, %r217, %r218 };
-	// end inline asm
-	// begin inline asm
-	@%p40 st.global.v4.b32 [ %rd62 + 0 ], { %r219, %r220, %r221, %r222 };
-	// end inline asm
-	// begin inline asm
-	@%p41 st.global.v4.b32 [ %rd63 + 0 ], { %r223, %r224, %r225, %r226 };
-	// end inline asm
-	// begin inline asm
-	@%p42 st.global.v4.b32 [ %rd64 + 0 ], { %r227, %r228, %r229, %r230 };
-	// end inline asm
-	// begin inline asm
-	@%p43 st.global.v4.b32 [ %rd65 + 0 ], { %r231, %r232, %r233, %r234 };
-	// end inline asm
-	// begin inline asm
-	@%p44 st.global.v4.b32 [ %rd66 + 0 ], { %r235, %r236, %r237, %r238 };
-	// end inline asm
-	// begin inline asm
-	@%p45 st.global.v4.b32 [ %rd67 + 0 ], { %r239, %r240, %r241, %r242 };
-	// end inline asm
-	// begin inline asm
-	@%p46 st.global.v4.b32 [ %rd68 + 0 ], { %r243, %r244, %r245, %r246 };
-	// end inline asm
-	// begin inline asm
-	@%p47 st.global.v4.b32 [ %rd69 + 0 ], { %r247, %r248, %r249, %r250 };
-	// end inline asm
-	// begin inline asm
-	@%p48 st.global.v4.b32 [ %rd70 + 0 ], { %r251, %r252, %r253, %r254 };
-	// end inline asm
-	// begin inline asm
-	@%p49 st.global.v4.b32 [ %rd71 + 0 ], { %r255, %r256, %r257, %r258 };
-	// end inline asm
-	// begin inline asm
-	@%p50 st.global.v4.b32 [ %rd72 + 0 ], { %r259, %r260, %r261, %r262 };
-	// end inline asm
-	.loc	1 187 5                         // tutorial_profile.py:187:5
-	// begin inline asm
-	mov.u32 %r263, %clock;
+	mov.u32 %r199, %clock;
 	// end inline asm
 	.loc	1 168 5                         // tutorial_profile.py:168:5
-	add.s32 	%r264, %r53, 32;
-	mov.b32 	%r265, 2;
+	add.s32 	%r200, %r53, 32;
+	mov.b32 	%r201, 2;
 	// begin inline asm
-	@%p1 st.shared.v2.b32 [ %r264 + 0 ], { %r265, %r198 };
+	@%p1 st.shared.v2.b32 [ %r200 + 0 ], { %r201, %r198 };
 	// end inline asm
-	.loc	1 187 5                         // tutorial_profile.py:187:5
-	add.s32 	%r267, %r53, 40;
-	mov.b32 	%r268, -2147483646;
+	.loc	1 186 5                         // tutorial_profile.py:186:5
+	add.s32 	%r203, %r53, 40;
+	mov.b32 	%r204, -2147483646;
 	// begin inline asm
-	@%p1 st.shared.v2.b32 [ %r267 + 0 ], { %r268, %r263 };
+	@%p1 st.shared.v2.b32 [ %r203 + 0 ], { %r204, %r199 };
+	// end inline asm
+	.loc	1 276 21                        // tutorial_profile.py:276:21
+	// begin inline asm
+	@%p37 st.global.v4.b32 [ %rd57 + 0 ], { %r206, %r207, %r208, %r209 };
+	// end inline asm
+	// begin inline asm
+	@%p38 st.global.v4.b32 [ %rd58 + 0 ], { %r210, %r211, %r212, %r213 };
+	// end inline asm
+	// begin inline asm
+	@%p39 st.global.v4.b32 [ %rd59 + 0 ], { %r214, %r215, %r216, %r217 };
+	// end inline asm
+	// begin inline asm
+	@%p40 st.global.v4.b32 [ %rd60 + 0 ], { %r218, %r219, %r220, %r221 };
+	// end inline asm
+	// begin inline asm
+	@%p41 st.global.v4.b32 [ %rd61 + 0 ], { %r222, %r223, %r224, %r225 };
+	// end inline asm
+	// begin inline asm
+	@%p42 st.global.v4.b32 [ %rd62 + 0 ], { %r226, %r227, %r228, %r229 };
+	// end inline asm
+	// begin inline asm
+	@%p43 st.global.v4.b32 [ %rd63 + 0 ], { %r230, %r231, %r232, %r233 };
+	// end inline asm
+	// begin inline asm
+	@%p44 st.global.v4.b32 [ %rd64 + 0 ], { %r234, %r235, %r236, %r237 };
+	// end inline asm
+	// begin inline asm
+	@%p45 st.global.v4.b32 [ %rd65 + 0 ], { %r238, %r239, %r240, %r241 };
+	// end inline asm
+	// begin inline asm
+	@%p46 st.global.v4.b32 [ %rd66 + 0 ], { %r242, %r243, %r244, %r245 };
+	// end inline asm
+	// begin inline asm
+	@%p47 st.global.v4.b32 [ %rd67 + 0 ], { %r246, %r247, %r248, %r249 };
+	// end inline asm
+	// begin inline asm
+	@%p48 st.global.v4.b32 [ %rd68 + 0 ], { %r250, %r251, %r252, %r253 };
+	// end inline asm
+	// begin inline asm
+	@%p49 st.global.v4.b32 [ %rd69 + 0 ], { %r254, %r255, %r256, %r257 };
+	// end inline asm
+	// begin inline asm
+	@%p50 st.global.v4.b32 [ %rd70 + 0 ], { %r258, %r259, %r260, %r261 };
+	// end inline asm
+	// begin inline asm
+	@%p51 st.global.v4.b32 [ %rd71 + 0 ], { %r262, %r263, %r264, %r265 };
+	// end inline asm
+	// begin inline asm
+	@%p52 st.global.v4.b32 [ %rd72 + 0 ], { %r266, %r267, %r268, %r269 };
 	// end inline asm
 	.loc	1 192 0                         // tutorial_profile.py:192:0
 	bar.sync 	0;
@@ -1197,7 +1199,7 @@ $L__BB0_3:                              // %._crit_edge
 	mov.u32 	%r368, %nctaid.x;
 	mov.u32 	%r369, %nctaid.y;
 	mad.lo.s32 	%r370, %r271, %r369, %r270;
-	mad.lo.s32 	%r42, %r370, %r368, %r51;
+	mad.lo.s32 	%r42, %r370, %r368, %r50;
 	mul.lo.s32 	%r43, %r42, 530;
 	shl.b32 	%r371, %r4, 1;
 	add.s32 	%r372, %r371, %r43;
@@ -1233,7 +1235,7 @@ $L__BB0_5:                              // =>This Inner Loop Header: Depth=1
 $L__BB0_6:                              // %.loopexit
 	.loc	1 276 4                         // tutorial_profile.py:276:4
 	ret;
-$L__tmp6:
+$L__tmp7:
 $L__func_end0:
                                         // -- End function
 }
@@ -1430,15 +1432,15 @@ $L__func_end0:
 .b8 27                                  // DW_AT_call_column
 .b8 4                                   // Abbrev [4] 0xae:0x18 DW_TAG_inlined_subroutine
 .b32 105                                // DW_AT_abstract_origin
-.b64 $L__tmp2                           // DW_AT_low_pc
-.b64 $L__tmp3                           // DW_AT_high_pc
+.b64 $L__tmp3                           // DW_AT_low_pc
+.b64 $L__tmp4                           // DW_AT_high_pc
 .b8 1                                   // DW_AT_call_file
 .b8 227                                 // DW_AT_call_line
 .b8 27                                  // DW_AT_call_column
 .b8 4                                   // Abbrev [4] 0xc6:0x18 DW_TAG_inlined_subroutine
 .b32 105                                // DW_AT_abstract_origin
-.b64 $L__tmp4                           // DW_AT_low_pc
-.b64 $L__tmp5                           // DW_AT_high_pc
+.b64 $L__tmp5                           // DW_AT_low_pc
+.b64 $L__tmp6                           // DW_AT_high_pc
 .b8 1                                   // DW_AT_call_file
 .b8 254                                 // DW_AT_call_line
 .b8 33                                  // DW_AT_call_column
