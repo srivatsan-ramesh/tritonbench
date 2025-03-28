@@ -80,7 +80,7 @@ for i, region in enumerate(region_names):
         f"{var_percent:.1f}%",
         ha="center",
         va="bottom",
-        fontsize=10,
+        fontsize=20,
         color="red",
     )
 
