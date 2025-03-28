@@ -35,13 +35,20 @@ for i, filename in enumerate(os.listdir(traces_dir)):
                     data[event["name"]] = [[event["dur"]]]
 
 region_names = list(data.keys())
-region_names.sort()
 data_values = [np.sum(data[region], axis=1) for region in region_names]
 
 fig, ax = plt.subplots(figsize=(8, 5))
 
 # Create a boxplot for each region (whiskers go to min and max)
-bp = ax.boxplot(data_values, tick_labels=region_names, whis=[0, 100], patch_artist=True)
+bp = ax.boxplot(
+    data_values,
+    tick_labels=[
+        "arith.addi",
+        "arith.muli",
+    ],
+    whis=[0, 100],
+    patch_artist=True,
+)
 
 for box in bp["boxes"]:
     box.set(facecolor="lightgray")
@@ -67,7 +74,7 @@ for i, region in enumerate(region_names):
 
     # Position the text slightly above the region's maximum value
     max_val = np.max(values)
-    offset = 0  # small vertical offset
+    offset = 5  # small vertical offset
     var_text_y = max_val + offset
 
     ax.text(
@@ -76,13 +83,12 @@ for i, region in enumerate(region_names):
         f"{var_percent:.1f}%",
         ha="center",
         va="bottom",
-        fontsize=10,
+        fontsize=20,
         color="red",
     )
 
-ax.set_xlabel("Region")
-ax.set_ylabel("Cycles")
-ax.set_title("Boxplot per Region with Variance % (Std as % of Mean)")
+ax.set_xlabel("(M, N, K) = (1024, 1024, 512)", fontsize=20)
+ax.set_ylabel("Cycles", fontsize=20)
 ax.grid(True, axis="y")
 
 plt.savefig(f"{script_dir}/{args.op}/clock_cycles_box_plot.png")
