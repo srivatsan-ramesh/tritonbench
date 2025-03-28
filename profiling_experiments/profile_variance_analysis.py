@@ -40,7 +40,15 @@ data_values = [np.sum(data[region], axis=1) for region in region_names]
 fig, ax = plt.subplots(figsize=(8, 5))
 
 # Create a boxplot for each region (whiskers go to min and max)
-bp = ax.boxplot(data_values, tick_labels=region_names, whis=[0, 100], patch_artist=True)
+bp = ax.boxplot(
+    data_values,
+    tick_labels=[
+        "triton_nvidia_gpu.warp_group_dot",
+        "triton_gpu.async_copy_global_to_local",
+    ],
+    whis=[0, 100],
+    patch_artist=True,
+)
 
 for box in bp["boxes"]:
     box.set(facecolor="lightgray")
@@ -75,14 +83,12 @@ for i, region in enumerate(region_names):
         f"{var_percent:.1f}%",
         ha="center",
         va="bottom",
-        fontsize=10,
+        fontsize=20,
         color="red",
     )
 
-ax.set_ylabel("Clock Cycles")
-ax.set_title(
-    "Boxplot per Region with Variance % (Std as % of Mean) - (M, N, K) = (1024, 1024, 512)"
-)
+ax.set_xlabel("(M, N, K) = (1024, 1024, 512)", fontsize=20)
+ax.set_ylabel("Cycles", fontsize=20)
 ax.grid(True, axis="y")
 
 plt.savefig(f"{script_dir}/{args.op}/clock_cycles_box_plot.png")
