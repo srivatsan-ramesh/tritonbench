@@ -42,7 +42,7 @@ fig, ax = plt.subplots(figsize=(8, 5))
 # Create a boxplot for each region (whiskers go to min and max)
 bp = ax.boxplot(
     data_values,
-    tick_labels=["prologue", "stable", "epilogue"],
+    tick_labels=["prologue"],
     whis=[0, 100],
     patch_artist=True,
 )
